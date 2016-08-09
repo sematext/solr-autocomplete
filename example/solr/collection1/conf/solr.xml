@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ All (relative) paths are relative to the installation path
+  
+  persistent: Save changes made via the API to this file
+  sharedLib: path to a lib directory that will be shared across all cores
+-->
+<solr persistent="false">
+
+  <!--
+  adminPath: RequestHandler path to manage cores.  
+    If 'null' (or absent), cores will not be manageable via REST
+  -->
+  <cores adminPath="/admin/cores">
+    <core name="main" instanceDir="/search/solr_home/cores/main" />
+    <core name="ac"   instanceDir="/search/solr_home/cores/ac" />
+  </cores>
+</solr>

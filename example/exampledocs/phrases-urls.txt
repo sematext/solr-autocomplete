@@ -1,0 +1,6 @@
+# AutoComplete suggestions to put in the "phrase" AutoComplete index
+# field, along with a URL associated to each phrase for storing in
+# the "url" field.
+#
+phrase:First Item Here	url:http://example.com/First
+phrase:Second Item Here	url:http://example.com/Second

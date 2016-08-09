@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+  <luceneMatchVersion>${tests.luceneMatchVersion:LUCENE_6_0_1}</luceneMatchVersion>
+
+  <indexConfig>
+   <!-- Values here affect all index writers and act as a default unless overridden. -->
+    <useCompoundFile>false</useCompoundFile>
+
+    <ramBufferSizeMB>128</ramBufferSizeMB>
+    <writeLockTimeout>1000</writeLockTimeout>
+
+    <!--
+     Expert:
+     The Merge Policy in Lucene controls how merging is handled by Lucene.  The default in 2.3 is the LogByteSizeMergePolicy, previous
+     versions used LogDocMergePolicy.
+
+     LogByteSizeMergePolicy chooses segments to merge based on their size.  The Lucene 2.2 default, LogDocMergePolicy chose when
+     to merge based on number of documents
+
+     Other implementations of MergePolicy must have a no-argument constructor
+     -->
+    <!--<mergePolicy>org.apache.lucene.index.LogByteSizeMergePolicy</mergePolicy>-->
+
+    <!--
+     Expert:
+     The Merge Scheduler in Lucene controls how merges are performed.  The ConcurrentMergeScheduler (Lucene 2.3 default)
+      can perform merges in the background using separate threads.  The SerialMergeScheduler (Lucene 2.2 default) does not.
+     -->
+    <!--<mergeScheduler>org.apache.lucene.index.ConcurrentMergeScheduler</mergeScheduler>-->
+
+    <!--
+      This option specifies which Lucene LockFactory implementation to use.
+      
+      single = SingleInstanceLockFactory - suggested for a read-only index
+               or when there is no possibility of another process trying
+               to modify the index.
+      native = NativeFSLockFactory
+      simple = SimpleFSLockFactory
+
+      (For backwards compatibility with Solr 1.2, 'simple' is the default
+       if not specified.)
+    -->
+    <lockType>${solr.lock.type:native}</lockType>
+
+    <!-- If true, unlock any held write or commit locks on startup. 
+         This defeats the locking mechanism that allows multiple
+         processes to safely access a lucene index, and should be
+         used with care.
+         This is not needed if lock type is 'none' or 'single'
+     -->
+    
+    <!--
+     Expert:
+    Controls how often Lucene loads terms into memory.  Default is 128 and is likely good for most everyone. -->
+    <!--<termIndexInterval>256</termIndexInterval>-->
+
+    <!--
+        Custom deletion policies can specified here. The class must
+        implement org.apache.lucene.index.IndexDeletionPolicy.
+
+        http://lucene.apache.org/java/2_3_2/api/org/apache/lucene/index/IndexDeletionPolicy.html
+
+        The standard Solr IndexDeletionPolicy implementation supports deleting
+        index commit points on number of commits, age of commit point and
+        optimized status.
+
+        The latest commit point should always be preserved regardless
+        of the criteria.
+    -->
+    <deletionPolicy class="solr.SolrDeletionPolicy">
+      <!-- The number of commit points to be kept -->
+      <str name="maxCommitsToKeep">1</str>
+      <!-- The number of optimized commit points to be kept -->
+      <str name="maxOptimizedCommitsToKeep">0</str>
+      <!--
+          Delete all commit points once they have reached the given age.
+          Supports DateMathParser syntax e.g.
+          
+          <str name="maxCommitAge">30MINUTES</str>
+          <str name="maxCommitAge">1DAY</str>
+      -->
+    </deletionPolicy>
+
+    <!--  To aid in advanced debugging, you may turn on IndexWriter debug logging.
+      Setting to true will set the file that the underlying Lucene IndexWriter
+      will write its debug infostream to.  -->
+     <infoStream>false</infoStream> 
+
+  </indexConfig>
+
+  <jmx/>
+
+  <query>
+    <!-- There are two implementations of cache available for Solr,
+         LRUCache, based on a synchronized LinkedHashMap, and
+         FastLRUCache, based on a ConcurrentHashMap.  FastLRUCache has faster gets
+         and slower puts in single threaded operation and thus is generally faster
+         than LRUCache when the hit ratio of the cache is high (> 75%), and may be
+         faster under other scenarios on multi-cpu systems. -->
+    <!-- Cache used by SolrIndexSearcher for filters (DocSets),
+         unordered sets of *all* documents that match a query.
+         When a new searcher is opened, its caches may be prepopulated
+         or "autowarmed" using data from caches in the old searcher.
+         autowarmCount is the number of items to prepopulate.  For LRUCache,
+         the autowarmed items will be the most recently accessed items.
+       Parameters:
+         class - the SolrCache implementation LRUCache or FastLRUCache
+         size - the maximum number of entries in the cache
+         initialSize - the initial capacity (number of entries) of
+           the cache.  (seel java.util.HashMap)
+         autowarmCount - the number of entries to prepopulate from
+           and old cache.
+         -->
+    <filterCache
+      class="solr.FastLRUCache"
+      size="512"
+      initialSize="512"
+      autowarmCount="128"/>
+  
+    <!-- Cache used to hold field values that are quickly accessible
+         by document id.  The fieldValueCache is created by default
+         even if not configured here.
+      <fieldValueCache
+        class="solr.FastLRUCache"
+        size="512"
+        autowarmCount="128"
+        showItems="32"
+      />
+    -->
+  
+   <!-- queryResultCache caches results of searches - ordered lists of
+         document ids (DocList) based on a query, a sort, and the range
+         of documents requested.  -->
+    <queryResultCache
+      class="solr.LRUCache"
+      size="512"
+      initialSize="512"
+      autowarmCount="32"/>
+  
+  <!-- documentCache caches Lucene Document objects (the stored fields for each document).
+       Since Lucene internal document ids are transient, this cache will not be autowarmed.  -->
+    <documentCache
+      class="solr.LRUCache"
+      size="512"
+      initialSize="512"
+      autowarmCount="0"/>
+  
+   <!-- An optimization for use with the queryResultCache.  When a search
+         is requested, a superset of the requested number of document ids
+         are collected.  For example, if a search for a particular query
+         requests matching documents 10 through 19, and queryWindowSize is 50,
+         then documents 0 through 49 will be collected and cached.  Any further
+         requests in that range can be satisfied via the cache.  -->
+    <queryResultWindowSize>10</queryResultWindowSize>
+  
+    <!-- Maximum number of documents to cache for any entry in the
+         queryResultCache. -->
+    <queryResultMaxDocsCached>200</queryResultMaxDocsCached>
+  
+    <!-- a firstSearcher event is fired whenever a new searcher is being
+         prepared but there is no current registered searcher to handle
+         requests or to gain autowarming data from. -->
+    <listener event="firstSearcher" class="solr.QuerySenderListener">
+      <arr name="queries">
+        <!-- lst> <str name="q">fast_warm</str> <str name="start">0</str> <str name="rows">10</str> </lst-->
+        <!-- lst><str name="q">static firstSearcher warming query from solrconfig.xml</str></lst-->
+      </arr>
+    </listener>
+
+    <!-- If a search request comes in and there is no current registered searcher,
+         then immediately register the still warming searcher and use it.  If
+         "false" then all requests will block until the first searcher is done
+         warming. -->
+    <useColdSearcher>false</useColdSearcher>
+
+    <!-- Maximum number of searchers that may be warming in the background
+      concurrently.  An error is returned if this limit is exceeded. Recommend
+      1-2 for read-only slaves, higher for masters w/o cache warming. -->
+    <maxWarmingSearchers>2</maxWarmingSearchers>
+
+  </query>
+
+  <!-- The default high-performance update handler -->
+  <updateHandler class="solr.DirectUpdateHandler2">
+
+    <!-- Enables a transaction log, used for real-time get, durability, and
+         and solr cloud replica recovery.  The log can grow as big as
+         uncommitted changes to the index, so use of a hard autoCommit
+         is recommended (see below).
+         "dir" - the target directory for transaction logs, defaults to the
+                solr data directory.  --> 
+    <updateLog>
+      <str name="dir">${solr.ulog.dir:}</str>
+    </updateLog>
+ 
+    <!-- AutoCommit
+
+         Perform a hard commit automatically under certain conditions.
+         Instead of enabling autoCommit, consider using "commitWithin"
+         when adding documents. 
+
+         http://wiki.apache.org/solr/UpdateXmlMessages
+
+         maxDocs - Maximum number of documents to add since the last
+                   commit before automatically triggering a new commit.
+
+         maxTime - Maximum amount of time in ms that is allowed to pass
+                   since a document was added before automatically
+                   triggering a new commit. 
+         openSearcher - if false, the commit causes recent index changes
+           to be flushed to stable storage, but does not cause a new
+           searcher to be opened to make those changes visible.
+
+         If the updateLog is enabled, then it's highly recommended to
+         have some sort of hard autoCommit to limit the log size.
+      -->
+     <autoCommit> 
+       <maxTime>${solr.autoCommit.maxTime:15000}</maxTime> 
+       <openSearcher>false</openSearcher> 
+     </autoCommit>
+
+    <!-- softAutoCommit is like autoCommit except it causes a
+         'soft' commit which only ensures that changes are visible
+         but does not ensure that data is synced to disk.  This is
+         faster and more near-realtime friendly than a hard commit.
+      -->
+
+     <autoSoftCommit> 
+       <maxTime>${solr.autoSoftCommit.maxTime:-1}</maxTime> 
+     </autoSoftCommit>
+
+    <!-- Update Related Event Listeners
+         
+         Various IndexWriter related events can trigger Listeners to
+         take actions.
+
+         postCommit - fired after every commit or optimize command
+         postOptimize - fired after every optimize command
+      -->
+    <!-- The RunExecutableListener executes an external command from a
+         hook such as postCommit or postOptimize.
+         
+         exe - the name of the executable to run
+         dir - dir to use as the current working directory. (default=".")
+         wait - the calling thread waits until the executable returns. 
+                (default="true")
+         args - the arguments to pass to the program.  (default is none)
+         env - environment variables to set.  (default is none)
+      -->
+    <!-- This example shows how RunExecutableListener could be used
+         with the script based replication...
+         http://wiki.apache.org/solr/CollectionDistribution
+      -->
+    <!--
+       <listener event="postCommit" class="solr.RunExecutableListener">
+         <str name="exe">solr/bin/snapshooter</str>
+         <str name="dir">.</str>
+         <bool name="wait">true</bool>
+         <arr name="args"> <str>arg1</str> <str>arg2</str> </arr>
+         <arr name="env"> <str>MYVAR=val1</str> </arr>
+       </listener>
+      -->
+
+  </updateHandler>
+
+  <requestDispatcher handleSelect="true" >
+    <requestParsers enableRemoteStreaming="false" multipartUploadLimitInKB="2048" />
+  </requestDispatcher>
+
+  <requestHandler name="standard" class="solr.StandardRequestHandler" default="true" />
+  <requestHandler name="/update" class="solr.UpdateRequestHandler" />
+
+  <requestHandler name="/update/javabin" class="solr.UpdateRequestHandler" />
+
+  <requestHandler name="/dataimport" class="org.apache.solr.handler.dataimport.DataImportHandler">
+    <lst name="defaults">
+      <str name="config">data-config.xml</str>
+    </lst>
+  </requestHandler>
+  <!--
+   Analysis request handler.  Since Solr 1.3.  Use to return how a document is analyzed.  Useful
+   for debugging and as a token server for other types of applications.
+
+   This is deprecated in favor of the improved DocumentAnalysisRequestHandler and FieldAnalysisRequestHandler
+
+   <requestHandler name="/analysis" class="solr.AnalysisRequestHandler" />
+   -->
+
+  <!--
+    An analysis handler that provides a breakdown of the analysis process of provided docuemnts. This handler expects a
+    (single) content stream with the following format:
+
+    <docs>
+      <doc>
+        <field name="id">1</field>
+        <field name="name">The Name</field>
+        <field name="text">The Text Value</field>
+      <doc>
+      <doc>...</doc>
+      <doc>...</doc>
+      ...
+    </docs>
+
+    Note: Each document must contain a field which serves as the unique key. This key is used in the returned
+    response to assoicate an analysis breakdown to the analyzed document.
+
+    Like the FieldAnalysisRequestHandler, this handler also supports query analysis by
+    sending either an "analysis.query" or "q" request paraemter that holds the query text to be analyized. It also
+    supports the "analysis.showmatch" parameter which when set to true, all field tokens that match the query
+    tokens will be marked as a "match".
+  -->
+  <requestHandler name="/analysis/document" class="solr.DocumentAnalysisRequestHandler" />
+
+  <!--
+    RequestHandler that provides much the same functionality as analysis.jsp. Provides the ability
+    to specify multiple field types and field names in the same request and outputs index-time and
+    query-time analysis for each of them.
+
+    Request parameters are:
+    analysis.fieldname - The field name whose analyzers are to be used
+    analysis.fieldtype - The field type whose analyzers are to be used
+    analysis.fieldvalue - The text for index-time analysis
+    q (or analysis.q) - The text for query time analysis
+    analysis.showmatch (true|false) - When set to true and when query analysis is performed, the produced
+                                      tokens of the field value analysis will be marked as "matched" for every
+                                      token that is produces by the query analysis
+   -->
+  <requestHandler name="/analysis/field" class="solr.FieldAnalysisRequestHandler" />
+
+  <!-- definition of AC component which can perform suggestions grouping by field is_sponsored. In suggestions, the first one will be the best suggestion
+       with is_sponsored=true. It will be followed by 3 best suggestions with is_sponsored=false. You can define multiple field definitions in list
+       acGroupigFieldDefinitions or you can provide your definitio with query parameters ac_grouping_field and ac_grouping_field_def. -->
+  <searchComponent name="acComponent" class="com.sematext.autocomplete.solr.AutoCompleteSearchComponent">
+    <str name="searchHandler">dismax_ac_query</str>
+    <lst name="acGroupingFieldDefinitions">
+      <str name="is_sponsored">true:1 false:3</str>
+    </lst>
+  </searchComponent>
+
+  <!-- Dismax version with AutoCompleteSearchComponent enabled - can't be used for searching unrelated to AC, since QueryComponent is disabled -->
+  <requestHandler name="dismax_ac" class="solr.SearchHandler" >
+    <lst name="defaults">
+     <str name="defType">dismax</str>
+     <str name="echoParams">explicit</str>
+     <float name="tie">0.01</float>
+     <str name="fl">*</str>
+     <int name="ps">4</int>
+     <str name="q.alt">*:*</str>
+     
+     <!-- IMPORTANT - Solr version 4.0 needs mm set to 100% for ac_spellcheck param to work properly -->
+     <str name="mm">100%</str>
+    </lst>
+    <arr name="components">
+      <str>acComponent</str>
+      <str>debug</str>
+    </arr>
+  </requestHandler>
+  
+  <requestHandler name="dismax_ac_query" class="solr.SearchHandler" >
+    <lst name="defaults">
+     <str name="defType">dismax</str>
+     <str name="echoParams">explicit</str>
+     <float name="tie">0.01</float>
+     <str name="fl">*</str>
+     <int name="ps">4</int>
+     <str name="q.alt">*:*</str>
+     
+     <!-- IMPORTANT - Solr version 4.0 needs mm set to 100% for ac_spellcheck param to work properly -->
+     <str name="mm">100%</str>
+    </lst>
+    <arr name="components">
+      <str>query</str>
+    </arr>
+  </requestHandler>
+
+  <!-- AC component with results grouping filter -->
+  <searchComponent name="acComponent_groupingHandlers" class="com.sematext.autocomplete.solr.AutoCompleteSearchComponent">
+    <lst name="acGroupingFieldDefinitions">
+      <str name="is_sponsored">true:1 false:3</str>
+    </lst>
+    <lst name="acGroupingHandlerDefinitions">
+      <lst name="is_sponsored:false">
+        <str name="class">com.sematext.autocomplete.solr.group.ExampleResalePriceGroupingHandler</str>
+        <str name="resalePrice">10.00</str>
+      </lst>
+    </lst>
+    <lst name="acGroupingSortDefinitions">
+      <lst name="is_sponsored:X_at_the_top">
+        <str name="class">com.sematext.autocomplete.solr.group.ExamplePushToTheTopGroupingSort</str>
+        <str name="X">true</str>
+      </lst>
+    </lst>
+  </searchComponent>
+
+  <requestHandler name="dismax_ac_groupingHandlers" class="solr.SearchHandler" >
+    <lst name="defaults">
+     <str name="defType">dismax</str>
+     <str name="echoParams">explicit</str>
+     <float name="tie">0.01</float>
+     <str name="fl">*</str>
+     <int name="ps">4</int>
+     <str name="q.alt">*:*</str>
+     
+     <!-- IMPORTANT - Solr version 4.0 needs mm set to 100% for ac_spellcheck param to work properly -->
+     <str name="mm">100%</str>
+    </lst>
+    <arr name="components">
+      <str>query</str>
+      <str>acComponent_groupingHandlers</str>
+      <str>debug</str>
+    </arr>
+  </requestHandler>
+
+  <!-- config for the admin interface --> 
+  <admin>
+    <defaultQuery>solr</defaultQuery>
+  </admin>
+
+</config>

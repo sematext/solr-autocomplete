@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+  <updateHandler class="solr.DirectUpdateHandler2" >
+
+    <!-- AC Update Request Processor doesn't call commit after adding
+         a new doc so users can specify their own commit policy
+         through usage of autoCommit and autoSoftCommit settings. We
+         suggest using autoSoftCommit with period of 60 seconds and
+         hard commit with period of 10 min or longer if 10 minutes is
+         too aggressive for your system-->
+    <autoCommit>
+      <maxTime>600000</maxTime>
+      <openSearcher>false</openSearcher>
+    </autoCommit>
+    <autoSoftCommit>
+      <maxTime>60000</maxTime>
+    </autoSoftCommit>
+  </updateHandler>
+
+  <updateRequestProcessorChain>
+    <processor class="com.sematext.autocomplete.urp.AutocompleteUpdateRequestProcessorFactory">
+      <str name="separator">,</str>
+
+      <!-- Use only when AC core is deployed on separate Solr
+      <str name="solrAC">http://localhost:8080/solr/autocomplete</str>
+      -->
+
+      <!-- Used with embedded Solr AC core; when AC core is deployed
+           on same Solr as 'main index' -->
+      <str name="solrAC">autocomplete</str>
+
+      <!--Fields which will be added, [] fields will be treated as
+          array fields which will be tokenized by 'separator' -->
+      <str name="fields">name,[features]</str>
+    </processor>
+    <processor class="solr.RunUpdateProcessorFactory" />
+    <processor class="solr.LogUpdateProcessorFactory" />
+  </updateRequestProcessorChain>
+
+  <requestDispatcher handleSelect="true" >
+    <requestParsers enableRemoteStreaming="false" multipartUploadLimitInKB="2048" />
+  </requestDispatcher>
+
+  <requestHandler name="standard" class="solr.StandardRequestHandler" default="true" />
+  <requestHandler name="/update" class="solr.XmlUpdateRequestHandler" />
+  <requestHandler name="/admin/" class="org.apache.solr.handler.admin.AdminHandlers" />
+
+  <!-- config for the admin interface -->
+  <admin>
+    <defaultQuery>solr</defaultQuery>
+  </admin>
+
+</config>

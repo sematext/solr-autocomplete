@@ -1,0 +1,9 @@
+- download + install java
+- download jetty
+- download solr
+- cp solr war to jetty/webapp
+- mkdir -p solr_home/conf
+- cp st-AutoComplet/conf/*xml solr_home/conf/
+- edit solr.xml to your liking
+- mkdir -p cores/coreAC-es cores/coreAC-en cores/coreAC-hr
+- ln -s cores/coreAC-hr/conf conf

@@ -1,0 +1,19 @@
+<dataConfig>
+ <document>
+   <entity name="sep"
+     processor="SolrEntityProcessor"
+     url="http://localhost:8080/solr/main-index"
+     query="*:*"
+     fl="id,project,title,type,url"
+     rows="1000"
+     transformer="TemplateTransformer"
+     format="javabin">
+     <field column="id" name="id" />
+     <field column="project" name="project" />
+     <field column="title" name="phrase" />
+     <field column="type" name="type_desc" />
+     <field column="url" name="link" />
+     <field column="sponsored" template="false" />
+   </entity>
+ </document>
+</dataConfig>

@@ -1,0 +1,5 @@
+# AutoComplete suggestions to put in the "phrase" AutoComplete index
+# field.
+#
+phrase:First Item Here
+phrase:Second Item Here

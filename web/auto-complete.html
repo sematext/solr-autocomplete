@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Auto-Complete Demo</title>
+    <style type="text/css">
+    body {
+      margin:0;
+      padding:0;
+    }
+    </style>
+    
+    <link rel="stylesheet" type="text/css" href="./css/fonts/fonts-min.css" />
+    <link rel="stylesheet" type="text/css" href="./css/autocomplete.css" />
+    <script type="text/javascript" src="./js/yahoo-dom-event.js"></script>
+    <script type="text/javascript" src="./js/connection-min.js"></script>
+    <script type="text/javascript" src="./js/animation-min.js"></script>
+    <script type="text/javascript" src="./js/datasource-min.js"></script>
+    <script type="text/javascript" src="./js/autocomplete.js"></script>
+
+    <style type="text/css">
+    #myAutoComplete {
+        width:30em; /* set width here or else widget will expand to fit its container */
+        padding-bottom:2em;
+    }
+    </style>
+  </head>
+
+  <body class="yui-skin-sam">
+    <h3 align="center">Auto-Complete Demo</h3>
+    
+    <table align="center" border="1" rules="NONE" frame="BOX" bgcolor="#F0F0F0" width="405">
+    <tr>
+    <td>
+    
+    <div id="myAutoComplete">
+      <input id="myInput" type="text">
+      <div id="myContainer"></div>
+    </td>
+    </tr>
+    <tr>
+    <td align="center">Select language:
+      <select id="selectTypeId" valign="center">
+        <option value ="type1">Type 1</option>
+        <option value ="type2">Type 2</option>
+        <option value ="type3">Type 3</option>
+      </select>
+    </td>
+    </tr>
+    </table>
+    </div>
+    
+    <script type="text/javascript">
+    YAHOO.example.RemoteCustomRequest = function() {
+        
+        var typeid = document.getElementById("selectTypeId");
+    
+        // Use an XHRDataSource
+        // var oDS = new YAHOO.util.XHRDataSource("http://localhost:8983/solr/");
+        var oDS = new YAHOO.util.XHRDataSource("http://CHANGE.TO.YOUR.SERVER.HERE/ac/");
+        // Set the responseType
+        oDS.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;
+        // Define the schema of the JSON results
+        oDS.responseSchema = {
+            resultsList : "response.docs",
+            fields : ["phrase", "type_description", "url", "url_description", "price", "thumbnail_url", "is_sponsored"]
+        };
+    
+        // Instantiate the AutoComplete
+        var oAC = new YAHOO.widget.AutoComplete("myInput", "myContainer", oDS);
+        // Throttle requests sent
+        oAC.queryDelay = .3;
+    
+        // The webservice needs additional parameters
+        oAC.generateRequest = function(sQuery) {
+
+            // example with additional pull-down menu with types
+            // return selectTypeId.options[selectTypeId.selectedIndex].value + "/" + sQuery;
+
+            // example that goes directly to Solr without going through Apache - adjust the above XHRDataSource URL
+            // return "select?wt=json&q=" + sQuery;
+
+            // example that appends just the selected AC suggestion to the oDS URL (e.g. the Apache URL)
+            return sQuery;
+
+            // example that goes directly to Solr without going through Apache and also sends the request to handler with AC search component and defines a
+            // grouping field
+            // return "select?wt=json&q=" + sQuery + "&qt=standard_ac&ac_grouping_field=is_sponsored";
+        };
+        
+        var getImgUrl = function(oPhoto, sSize) {
+          if (oPhoto.thumbnail_url == null) {
+            return "";
+          }
+          
+          return "<img src='" + oPhoto.thumbnail_url + "'>"; // class='flickrImg'>"; 
+        } 
+         
+         
+        oAC.formatResult = function(oResultItem, sQuery) {
+            var sMarkup = "";
+            if (oResultItem.is_sponsored == true) {
+              sMarkup = sMarkup + "<hr size:100%></hr>";
+              sMarkup = sMarkup + "<div style='font-size:16px; font-type:bold; background-color:#fff0d4'>";
+              sMarkup = sMarkup + "<div style='float:right; color:grey; font-size:10px'>Sponsored Link</div>";
+            }
+            else {
+              sMarkup = "<div>";
+            }
+
+            sMarkup = sMarkup + "<span>" + getImgUrl(oResultItem) + "</span>";
+            sMarkup = sMarkup + "<span>" + oResultItem.phrase + "</span>";
+            
+            if (oResultItem.type_description != null) {
+              sMarkup = sMarkup + "<span> - " + oResultItem.type_description + "</span>";
+            }
+            else {
+              sMarkup = sMarkup + "<span></span>";
+            }
+
+            sMarkup = sMarkup + "</div>";
+            if (oResultItem.is_sponsored == true) {
+              sMarkup = sMarkup + "<div style='background-color:#fff0d4'>";
+            }
+            else {
+              sMarkup = sMarkup + "<div>";
+            }
+
+            if (oResultItem.price != null) {
+              sMarkup = sMarkup + "<div style='float:right; background-color:#fff0d4;'>" + oResultItem.price + "</div>";
+            }
+
+            if (oResultItem.url != null) {
+              sMarkup = sMarkup + "<span style='background-color:#fff0d4'><a href='" + oResultItem.url + "'>";
+  
+              if (oResultItem.url_description != null) {
+                sMarkup = sMarkup + oResultItem.url_description;
+              }
+              else {
+                sMarkup = sMarkup + oResultItem.url;
+              }
+
+              sMarkup = sMarkup + "</a></span>";
+            }
+            
+            sMarkup = sMarkup + "</div>";
+            return (sMarkup);
+        };         
+        
+        return {
+            oDS: oDS,
+            oAC: oAC
+        };
+    }();
+    </script>
+
+  </body>
+</html>

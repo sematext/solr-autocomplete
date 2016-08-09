@@ -1,0 +1,2 @@
+In version 1.6.X
+   - 2016-06-13: upgrade to Solr 6.0.1
