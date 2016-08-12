@@ -5,6 +5,40 @@
 The `AutoComplete` (`AC`) enhances the search experience through suggest-as-you-type and auto-complete functionality built into the search form. As one starts to enter search terms, the module detects a pause in typing and offers a list of suggested searches. One can then easily pick one of the suggestions or continue refining the suggestions by typing in more of the query. For example, if you type `"bass"` `AC` might offer suggestions that include `"bass fishing"` or `"bass guitar"`, and even `"sea bass"` (note how `"bass"` is not necessarily the first word)
 
 ## Contents
+- [Solr Version](#solr-version)
+- [Build](#build)
+- [Release Notes](#release-notes)
+- [Advanced Functionality](#advanced-functionality)
+- [How it Works](#how-it-works)
+- [Installing AC into Your Application Server](#installing-ac-into-your-application-server)
+  - [Deploying AC Back-end](#deploying-ac-back-end)
+  - [Feeding AC Back-end from Command-line](#feeding-ac-back-end-from-command-line)
+    - [FileLoader](#fileloader)
+    - [IndexLoader](#indexloader)
+  - [Feeding AC with DataImportHandler](#feeding-ac-with-dataimporthandler)
+  - [Updating AC in Real-time](#updating-ac-in-real-time)
+  - [Adjusting AC schema.xml](#adjusting-ac-schema-xml)
+  - [Testing AC Backend](#testing-ac-backend)
+  - [Integrating AC into Search Form](#integrating-ac-into-search-form)
+  - [UI Customization](#ui-customization)
+    - [Minimum Query Length](#minimum-query-length)
+    - [Maximum Results Displayed](#maximum-results-displayed)
+    - [Animation](#animation)
+    - [Query Delay](#query-delay)
+    - [Auto-highlight](#auto-highlight)
+    - [Use Shadow](#use-shadow)
+  - [Using Advanced Functionality](#using-advanced-functionality)
+    - [Misspelling Correction](#misspelling-correction)
+    - [Suggestions Grouping](#suggestions-grouping)
+    - [Full Word Match Boosting](#full-word-match-boosting)
+    - [Matching Word Ordering Boost](#matching-word-ordering-boost)
+    - [Custom Data in AC GUI Component](#custom-data-in-ac-gui-component)
+    - [Parameter Matrix](#parameter-matrix)
+    - [AutoComplete in Distributed Environment](#autocomplete-in-distributed-environment)
+    - [HTTPS](#https)
+    - [Performance Considerations](#performance-considerations)
+  - [License](#license)
+- [Contact](#contact)
 
 ## Solr Version
 6.0.1
@@ -489,3 +523,11 @@ In that case, your `AC` component definition could look like this:
 ```
 
 Note that performance gain will not be large in most cases, so unless you really need to tune `AC` performance, we suggest sticking with the simpler default configuration.
+
+## License
+
+Query Autocomplete is released under Apache License, Version 2.0
+
+## Contact
+
+For any questions ping [@sematext](http://www.twitter.com/sematext)
