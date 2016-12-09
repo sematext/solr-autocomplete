@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <config>
-  <luceneMatchVersion>${tests.luceneMatchVersion:LUCENE_6_0_1}</luceneMatchVersion>
+  <luceneMatchVersion>${tests.luceneMatchVersion:LUCENE_6_3_0}</luceneMatchVersion>
 
   <indexConfig>
    <!-- Values here affect all index writers and act as a default unless overridden. -->

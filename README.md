@@ -41,7 +41,7 @@ The `AutoComplete` (`AC`) enhances the search experience through suggest-as-you-
 - [Contact](#contact)
 
 ## Solr Version
-6.0.1
+6.3.0
 
 ## Build
 You need maven and JDK 8:
@@ -51,8 +51,9 @@ $ mvn clean package
 ```
 
 ## Release Notes
-
-#### 1.6.6.0.1 (2016-08-06)
+#### 1.6.6.3.0 (2016-12-09)
+- Support for Solr 6.3.0
+#### 1.6.6.0.1 (2016-06-13)
 - Support for Solr 6.0.1
 
 ## Advanced Functionality

@@ -16,7 +16,7 @@ echo Loading $IN_FILE into AutoComplete backend at $SOLR_URL
 echo
 sleep 5
 
-cat $IN_FILE | java -cp target/st-AutoComplete-1.6.6.0.1-SNAPSHOT.jar:$JAR_DIR/solr-core-1.3.0.jar:$JAR_DIR/solr-common-1.3.0.jar:$JAR_DIR/commons-httpclient-4.4.1.jar:$JAR_DIR/commons-codec-1.10.jar com.sematext.autocomplete.loader.FileLoader $SOLR_URL
+cat $IN_FILE | java -cp target/st-AutoComplete-1.6.6.3.0-SNAPSHOT.jar:$JAR_DIR/solr-core-1.3.0.jar:$JAR_DIR/solr-common-1.3.0.jar:$JAR_DIR/commons-httpclient-4.4.1.jar:$JAR_DIR/commons-codec-1.10.jar com.sematext.autocomplete.loader.FileLoader $SOLR_URL
 
 echo
 wc -l $IN_FILE
