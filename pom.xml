@@ -1,11 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.sematext.autocomplete</groupId>
   <artifactId>st-AutoComplete</artifactId>
   <name>AutoComplete</name>
-  <version>1.6.6.3.0-SNAPSHOT</version>
+  <version>1.6.6.3.1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <description>Solr component for implementing suggest-as-you-type and auto-complete functionality</description>
   <url>http://sematext.com/open-source/index.html</url>
