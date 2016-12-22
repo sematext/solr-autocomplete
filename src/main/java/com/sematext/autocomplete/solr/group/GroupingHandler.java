@@ -37,9 +37,6 @@ public abstract class GroupingHandler {
    * in the List for each parameter name should contain all values which will be applied for this parameter.
    * 
    * @param requestParams parameters of original request. They should not be modified in this method!!
-   * 
-   * 
-   * @return .
    */
   public abstract void prepareGroupQueryParams(ModifiableSolrParams requestParams);
   
@@ -62,7 +59,7 @@ public abstract class GroupingHandler {
    *   - groupName - the value in the fieldName field
    *   
    * For instance, consider this grouping definition:
-   *   <str name=”type”>book:5 dvd:3 cd:2</str>
+   *   &lt;str name=”type”&gt;book:5 dvd:3 cd:2&lt;/str&gt;
    *   
    * This method would be invoked 3 times (since there are 3 different group queries):
    *   - fieldName = "type", groupName = "book"
@@ -71,7 +68,8 @@ public abstract class GroupingHandler {
    *   
    * If some GroupHandler is supposed to pre-process/post-process only the query of one particular group (say, type=book),
    * this method will return true only when grouping fieldName is "type" and value by which the group is formed is "book".
-   * 
+   *
+   * @param fieldName .
    * @param groupName .
    * @return .
    */
