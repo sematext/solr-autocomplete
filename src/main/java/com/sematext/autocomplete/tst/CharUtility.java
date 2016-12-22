@@ -5,6 +5,11 @@ public class CharUtility {
     /**
      * Returns an int value that is negative if cCompare comes before cRef in the alphabet, zero if the two are equal,
      * and positive if cCompare comes after cRef in the alphabet.
+     * 
+     * @param cCompare .
+     * @param cRef .
+     * 
+     * @return .
      */
     public static int compareCharsAlphabetically(char cCompare, char cRef) {
         return (alphabetizeChar(cCompare) - alphabetizeChar(cRef));

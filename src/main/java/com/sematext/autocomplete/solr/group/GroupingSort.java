@@ -25,7 +25,8 @@ public abstract class GroupingSort {
   /**
    * Used to define the new order in which AC result groups will be returned in the result set.
    * 
-   * @param allGroupsResults
+   * @param rb .
+   * @param allGroupsResults .
    */
   public abstract void sort(ResponseBuilder rb, List<AcGroupResult> allGroupsResults);
 

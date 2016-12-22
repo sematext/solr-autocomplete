@@ -72,6 +72,8 @@ public class TernarySearchTree {
     /**
      * Returns the number of values returned by the last call to matchAlmostString or matchPrefixString methods. (This
      * is really just for the purposes of the demo applet.)
+     * 
+     * @return .
      */
     public int getLastNumReturnValues() {
         return lastNumberOfReturnValues;
@@ -739,6 +741,8 @@ public class TernarySearchTree {
 
     /**
      * Prints subtree structure to standard output, beginning with startingNode and workind down.
+     * 
+     * @param startingNode .
      */
     protected void printTree(TSTNode startingNode) {
         System.out.println("");

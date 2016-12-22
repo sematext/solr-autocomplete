@@ -47,10 +47,10 @@ import com.sematext.solr.handler.component.ReSearcherRequestContext;
  * are sorted in resulting list. Such parameter is not mandatory, since it can be defined in configuration 
  * for each possible ac_grouping_field. For instance, configuration could look like this:
 
-  <lst name=”ac_grouping_fields_definition”>
-    <str name=”type”>book:5 dvd:3 cd:2</str>
-    <str name=”is_sposored”>false:9 true:1</str>
-  </lst>
+  &lt;lst name=”ac_grouping_fields_definition”&gt;
+    &lt;str name=”type”&gt;book:5 dvd:3 cd:2&lt;/str&gt;
+    &lt;str name=”is_sposored”&gt;false:9 true:1&lt;/str&gt;
+  &lt;/lst&gt;
 
  * When sending AC query, client can send parameters like:
 

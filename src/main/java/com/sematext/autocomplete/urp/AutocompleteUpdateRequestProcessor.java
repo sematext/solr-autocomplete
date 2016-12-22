@@ -141,9 +141,9 @@ public class AutocompleteUpdateRequestProcessor extends UpdateRequestProcessor {
      * This method is invoked once for each value found in "phrase" field from source (main index)
      * document.
      * 
-     * @param phraseFieldValue
-     * @param mainIndexDoc
-     * @return
+     * @param phraseFieldValue .
+     * @param mainIndexDoc .
+     * @return .
      */
     protected String decoratePhrase(String phraseFieldValue, SolrInputDocument mainIndexDoc) {
       return phraseFieldValue;

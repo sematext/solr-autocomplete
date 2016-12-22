@@ -42,7 +42,9 @@ import java.util.Map;
 public class PositionFilterFactory extends TokenFilterFactory {
   private final int positionIncrement;
 
-  /** Creates a new PositionFilterFactory */
+  /**
+   * @param args .
+   */
   public PositionFilterFactory(Map<String,String> args) {
     super(args);
     positionIncrement = getInt(args, "positionIncrement", 0);

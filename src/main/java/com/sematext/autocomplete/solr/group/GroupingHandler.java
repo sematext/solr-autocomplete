@@ -39,7 +39,7 @@ public abstract class GroupingHandler {
    * @param requestParams parameters of original request. They should not be modified in this method!!
    * 
    * 
-   * @return
+   * @return .
    */
   public abstract void prepareGroupQueryParams(ModifiableSolrParams requestParams);
   
@@ -47,8 +47,8 @@ public abstract class GroupingHandler {
    * Can be used to adjust resulting set after the query for particular group was executed. If no changes are done,
    * the method should return null.
    * 
-   * @param rb
-   * @param originalResult
+   * @param rb .
+   * @param originalResult .
    * @return new DocSlice result or null if no changes
    */
   public abstract DocListAndSet postProcessResult(ResponseBuilder rb, DocList originalResult);
@@ -72,8 +72,8 @@ public abstract class GroupingHandler {
    * If some GroupHandler is supposed to pre-process/post-process only the query of one particular group (say, type=book),
    * this method will return true only when grouping fieldName is "type" and value by which the group is formed is "book".
    * 
-   * @param groupName
-   * @return
+   * @param groupName .
+   * @return .
    */
   public final boolean accepts(String fieldName, String groupName) {
     if (this.fieldName.equalsIgnoreCase(fieldName) && this.groupName.equals(groupName)) {
