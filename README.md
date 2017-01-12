@@ -5,7 +5,7 @@
 The `AutoComplete` (`AC`) enhances the search experience through suggest-as-you-type and auto-complete functionality built into the search form. As one starts to enter search terms, the module detects a pause in typing and offers a list of suggested searches. One can then easily pick one of the suggestions or continue refining the suggestions by typing in more of the query. For example, if you type `"bass"` `AC` might offer suggestions that include `"bass fishing"` or `"bass guitar"`, and even `"sea bass"` (note how `"bass"` is not necessarily the first word)
 
 ## Contents
-- [Solr Version](#solr-version)
+- [Support Matrix](#support-matrix)
 - [Build](#build)
 - [Release Notes](#release-notes)
 - [Advanced Functionality](#advanced-functionality)
@@ -40,8 +40,25 @@ The `AutoComplete` (`AC`) enhances the search experience through suggest-as-you-
   - [License](#license)
 - [Contact](#contact)
 
-## Solr Version
-6.3.0
+## Support Matrix
+<table>
+  <tr>
+    <th>solr-autocomplete</th>
+    <th>solr</th>
+  </tr>
+  <tr>
+    <td>1.6.5.2.0</td>
+    <td>5.2.0</td>
+  </tr>
+  <tr>
+    <td>1.6.6.0.1</td>
+    <td>6.0.1</td>
+  </tr>
+  <tr>
+    <td>1.6.6.3.0</td>
+    <td>6.3.0</td>
+  </tr>
+</table>
 
 ## Build
 You need maven and JDK 8:
@@ -53,6 +70,7 @@ $ mvn clean package
 ## Release Notes
 #### 1.6.6.3.0 (2016-12-09)
 - Support for Solr 6.3.0
+
 #### 1.6.6.0.1 (2016-06-13)
 - Support for Solr 6.0.1
 
