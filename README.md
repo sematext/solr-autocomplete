@@ -465,7 +465,7 @@ You can add as many custom fields to the schema.xml as you want and display them
 Not all parameters can be sent together. The following table summarizes relations between various `AC` parameters.
 
 `ac_grouping_field`|`ac_grouping_field_def`|`ac_spellcheck`|`ac_matchFullWords`|`ac_matchWordOrder`|`ac_pureCompletion`
-----|----|----|----|----|----|----
+----|----|----|----|----|----|
 `ac_grouping_field`||Y|Y|Y|Y|Y
 `ac_grouping_field_def`|Y||Y|Y|Y|Y
 `ac_spellcheck`|Y|Y||Y|Y|N
