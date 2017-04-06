@@ -1,0 +1,3 @@
+phrase:First Item Here	is_sponsored:false
+phrase:Second Item Here	is_sponsored:true
+phrase:Here Item	is_sponsored:false

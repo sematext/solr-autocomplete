@@ -97,6 +97,7 @@
       <tokenizer class="solr.WhitespaceTokenizerFactory"/>
     </analyzer>
   </fieldType>
+  <field name="_version_" type="long" indexed="true" stored="true"/>
   <field name="is_sponsored" type="boolean" indexed="true" required="false" stored="true"/>
   <field name="matchFullWords" type="text_ws" indexed="true" stored="false"/>
   <field name="matchWordOrder" type="shinglesAndNgramsTokType" indexed="true" stored="false"/>

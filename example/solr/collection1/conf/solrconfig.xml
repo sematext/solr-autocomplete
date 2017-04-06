@@ -2,6 +2,17 @@
 <config>
   <luceneMatchVersion>${tests.luceneMatchVersion:LUCENE_6_3_0}</luceneMatchVersion>
 
+  <lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-dataimporthandler-.*\.jar" />
+
+  <lib dir="${solr.install.dir:../../../..}/contrib/extraction/lib" regex=".*\.jar" />
+  <lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-cell-\d.*\.jar" />
+
+  <lib dir="${solr.install.dir:../../../..}/contrib/langid/lib/" regex=".*\.jar" />
+  <lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-langid-\d.*\.jar" />
+
+  <lib dir="${solr.install.dir:../../../..}/contrib/velocity/lib" regex=".*\.jar" />
+  <lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-velocity-\d.*\.jar" />
+
   <indexConfig>
    <!-- Values here affect all index writers and act as a default unless overridden. -->
     <useCompoundFile>false</useCompoundFile>
@@ -271,8 +282,7 @@
   <requestHandler name="/update" class="solr.UpdateRequestHandler" />
 
   <requestHandler name="/update/javabin" class="solr.UpdateRequestHandler" />
-
-  <requestHandler name="/dataimport" class="org.apache.solr.handler.dataimport.DataImportHandler">
+  <requestHandler name="/dataimport" class="solr.DataImportHandler">
     <lst name="defaults">
       <str name="config">data-config.xml</str>
     </lst>

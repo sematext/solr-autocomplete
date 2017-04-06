@@ -3,3 +3,5 @@
 #
 phrase:First Item Here
 phrase:Second Item Here
+phrase:newton
+phrase:new york
