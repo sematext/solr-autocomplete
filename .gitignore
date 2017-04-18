@@ -11,3 +11,6 @@
 hs_err_pid*
 /target/
 /.settings/
+/.classpath
+/.project
+/st-AutoComplete.iml
