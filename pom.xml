@@ -4,7 +4,7 @@
   <groupId>com.sematext.autocomplete</groupId>
   <artifactId>st-AutoComplete</artifactId>
   <name>AutoComplete</name>
-  <version>1.6.6.5.1</version>
+  <version>1.6.6.5.2-SNAPSHOT</version>
   <packaging>jar</packaging>
   <description>Solr component for implementing suggest-as-you-type and auto-complete functionality</description>
   <url>http://sematext.com/open-source/index.html</url>
@@ -35,7 +35,7 @@
     <connection>scm:git:git@github.com:sematext/solr-autocomplete.git</connection>
     <developerConnection>scm:git:git@github.com:sematext/solr-autocomplete.git</developerConnection>
     <url>https://github.com/sematext/solr-autocomplete</url>
-    <tag>st-AutoComplete-1.6.6.5.1</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <distributionManagement>
