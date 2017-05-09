@@ -47,6 +47,10 @@ The `AutoComplete` (`AC`) enhances the search experience through suggest-as-you-
     <th>solr</th>
   </tr>
   <tr>
+      <td>1.6.6.5.1</td>
+      <td>6.5.1</td>
+    </tr>
+  <tr>
     <td>1.6.5.2.0</td>
     <td>5.2.0</td>
   </tr>
@@ -68,6 +72,9 @@ $ mvn clean package
 ```
 
 ## Release Notes
+#### 1.6.6.5.1 (2017-05-09)
+- Support for Solr 6.5.1
+
 #### 1.6.6.3.0 (2016-12-09)
 - Support for Solr 6.3.0
 
