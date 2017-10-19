@@ -171,7 +171,7 @@ public class AutocompleteUpdateRequestProcessor extends UpdateRequestProcessor {
         }
           
         if (!valueExists) {
-          f.addValue(value, 1);
+          f.addValue(value);
         }
       }
     }
@@ -203,7 +203,7 @@ public class AutocompleteUpdateRequestProcessor extends UpdateRequestProcessor {
           }
           
           if (!valueExists) {
-            f.addValue(value, 1);
+            f.addValue(value);
           }
         }
       }

@@ -48,7 +48,7 @@ public class IndexLoader {
         Map<String,String> fieldMap = getFieldMapping(args, 2);
         DirectoryReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(args[0])));
         int docs = reader.maxDoc();
-        SolrClient solr = new ConcurrentUpdateSolrClient(args[1], 10000, 2);
+        SolrClient solr = new ConcurrentUpdateSolrClient.Builder(args[1]).withQueueSize(10000).withThreadCount(2).build();
         Set<SolrInputDocument> batch = new HashSet<SolrInputDocument>(1000);
         
         Bits liveDocs = MultiFields.getLiveDocs(reader);

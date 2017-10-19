@@ -31,18 +31,6 @@ public class AutoCompleteRequestHandler extends RequestHandlerBase {
     }
 
     @Override
-    public String getSource() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String getVersion() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public void handleRequestBody(SolrQueryRequest request, SolrQueryResponse response) throws Exception {
 
         String searchString = request.getParams().get("searchString");

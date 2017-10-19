@@ -44,7 +44,7 @@ public class FileLoader {
     }
 
     public FileLoader(String solrURL) throws MalformedURLException {
-        solr = new ConcurrentUpdateSolrClient(solrURL, 10000, 2);
+        solr = new ConcurrentUpdateSolrClient.Builder(solrURL).withQueueSize(10000).withThreadCount(2).build();
     }
 
     protected void run() throws SolrServerException, IOException {

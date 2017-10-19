@@ -2,8 +2,6 @@
 <!-- Solr managed schema - automatically generated - DO NOT EDIT -->
 <schema name="autocomplete-ngram" version="1.6">
   <uniqueKey>phrase</uniqueKey>
-  <defaultSearchField>prefixTok</defaultSearchField>
-  <solrQueryParser defaultOperator="OR"/>
   <fieldType name="alphaOnlySort" class="solr.TextField" omitNorms="true" sortMissingLast="true">
     <analyzer>
       <tokenizer class="solr.KeywordTokenizerFactory"/>

@@ -52,7 +52,8 @@ public class AutoCompleteSearchComponentTest extends SolrTestCaseJ4 {
 
   @Test
   public void testAcQuery() {
-    assertQ(req(CommonParams.QT, "dismax_ac", 
+    assertQ(req(CommonParams.QT, "dismax_ac",
+        CommonParams.DF, "prefixTok",
         CommonParams.Q, "bo",
         AutoCompleteSearchComponent.AC_GROUPING_FIELD_PARAM_NAME, "is_sponsored",
         AutoCompleteSearchComponent.COMPONENT_NAME, "true")
@@ -66,7 +67,8 @@ public class AutoCompleteSearchComponentTest extends SolrTestCaseJ4 {
   
   @Test
   public void testAcQueryReversedOrder() {
-    assertQ(req(CommonParams.QT, "dismax_ac", 
+    assertQ(req(CommonParams.QT, "dismax_ac",
+        CommonParams.DF, "prefixTok",
         CommonParams.Q, "bo",
         AutoCompleteSearchComponent.AC_GROUPING_FIELD_PARAM_NAME, "is_sponsored",
         AutoCompleteSearchComponent.AC_GROUPING_FIELD_DEFINITION_PARAM_NAME, "false:3 true:1",
@@ -81,7 +83,8 @@ public class AutoCompleteSearchComponentTest extends SolrTestCaseJ4 {
   
   @Test
   public void testAcQueryWithNonExistantValue() {
-    assertQ(req(CommonParams.QT, "dismax_ac", 
+    assertQ(req(CommonParams.QT, "dismax_ac",
+        CommonParams.DF, "prefixTok",
         CommonParams.Q, "bo",
         AutoCompleteSearchComponent.AC_GROUPING_FIELD_PARAM_NAME, "type",
         AutoCompleteSearchComponent.AC_GROUPING_FIELD_DEFINITION_PARAM_NAME, "dvd:3 book:1 pc:4",
@@ -96,7 +99,8 @@ public class AutoCompleteSearchComponentTest extends SolrTestCaseJ4 {
   
   @Test
   public void testAcQueryWithZeroRequestedCount() {
-    assertQ(req(CommonParams.QT, "dismax_ac", 
+    assertQ(req(CommonParams.QT, "dismax_ac",
+        CommonParams.DF, "prefixTok",
         CommonParams.Q, "bo",
         AutoCompleteSearchComponent.AC_GROUPING_FIELD_PARAM_NAME, "is_sponsored",
         AutoCompleteSearchComponent.AC_GROUPING_FIELD_DEFINITION_PARAM_NAME, "false:0 true:1",
@@ -108,7 +112,8 @@ public class AutoCompleteSearchComponentTest extends SolrTestCaseJ4 {
   
   @Test
   public void testAcQuerySomeValueExistsMultipleTimes() {
-    assertQ(req(CommonParams.QT, "dismax_ac", 
+    assertQ(req(CommonParams.QT, "dismax_ac",
+        CommonParams.DF, "prefixTok",
         CommonParams.Q, "bo",
         AutoCompleteSearchComponent.AC_GROUPING_FIELD_PARAM_NAME, "is_sponsored",
         AutoCompleteSearchComponent.AC_GROUPING_FIELD_DEFINITION_PARAM_NAME, "false:3 true:1 false:2",
@@ -125,7 +130,8 @@ public class AutoCompleteSearchComponentTest extends SolrTestCaseJ4 {
   
   @Test
   public void testAcBoostFullWords() {
-    assertQ(req(CommonParams.QT, "dismax_ac", 
+    assertQ(req(CommonParams.QT, "dismax_ac",
+        CommonParams.DF, "prefixTok",
         CommonParams.Q, "new",
         AutoCompleteSearchComponent.COMPONENT_NAME, "true")
         ,"//result[@name='response'][@numFound='2']"
@@ -146,12 +152,13 @@ public class AutoCompleteSearchComponentTest extends SolrTestCaseJ4 {
 
   @Test
   public void testAcBoostCorrectWordOrdering() {
-    assertQ(req(CommonParams.QT, "dismax_ac", 
+    assertQ(req(CommonParams.QT, "dismax_ac",
+        CommonParams.DF, "prefixTok",
         CommonParams.Q, "washington tim",
         AutoCompleteSearchComponent.COMPONENT_NAME, "true")
         ,"//result[@name='response'][@numFound='2']"
-        ,"//result[@name='response']/doc[1]/str[@name='phrase'][.='the washington times article']"
-        ,"//result[@name='response']/doc[2]/str[@name='phrase'][.='times in washington']"
+        ,"//result[@name='response']/doc[2]/str[@name='phrase'][.='the washington times article']"
+        ,"//result[@name='response']/doc[1]/str[@name='phrase'][.='times in washington']"
     );
     assertQ(req(CommonParams.QT, "dismax_ac", 
         CommonParams.Q, "washington tim",
@@ -165,18 +172,21 @@ public class AutoCompleteSearchComponentTest extends SolrTestCaseJ4 {
 
   @Test
   public void testAcSpellchecking() {
-    assertQ(req(CommonParams.QT, "dismax_ac", 
+    assertQ(req(CommonParams.QT, "dismax_ac",
+        CommonParams.DF, "phrase",
         CommonParams.Q, "washington tim",
+        CommonParams.DEBUG, "true",
         AutoCompleteSearchComponent.COMPONENT_NAME, "true")
         ,"//result[@name='response'][@numFound='2']"
-        ,"//result[@name='response']/doc[1]/str[@name='phrase'][.='the washington times article']"
-        ,"//result[@name='response']/doc[2]/str[@name='phrase'][.='times in washington']"
+        ,"//result[@name='response']/doc[2]/str[@name='phrase'][.='the washington times article']"
+        ,"//result[@name='response']/doc[1]/str[@name='phrase'][.='times in washington']"
     );
   }
 
   @Test
   public void testAcSpellchecking2() {
-    assertQ(req(CommonParams.QT, "dismax_ac", 
+    assertQ(req(CommonParams.QT, "dismax_ac",
+        CommonParams.DF, "prefixTok",
         CommonParams.Q, "washEngton tim",
         AutoCompleteSearchComponent.AC_SPELLCHECKING_PARAM_NAME, "true", 
         AutoCompleteSearchComponent.COMPONENT_NAME, "true")
@@ -188,7 +198,8 @@ public class AutoCompleteSearchComponentTest extends SolrTestCaseJ4 {
 
   @Test
   public void testAcBoostCorrectWordOrdering_noMlatches() {
-    assertQ(req(CommonParams.QT, "dismax_ac", 
+    assertQ(req(CommonParams.QT, "dismax_ac",
+        CommonParams.DF, "prefixTok",
         CommonParams.Q, "washeng",
         AutoCompleteSearchComponent.AC_MATCH_CORRECT_WORD_ORDERING_PARAM_NAME, "true", 
         AutoCompleteSearchComponent.COMPONENT_NAME, "true")
@@ -198,7 +209,8 @@ public class AutoCompleteSearchComponentTest extends SolrTestCaseJ4 {
   
   @Test
   public void testAcGroupingWithHandler() {
-    assertQ(req(CommonParams.QT, "dismax_ac", 
+    assertQ(req(CommonParams.QT, "dismax_ac",
+        CommonParams.DF, "prefixTok",
         CommonParams.Q, "bo",
         AutoCompleteSearchComponent.AC_GROUPING_FIELD_PARAM_NAME, "is_sponsored",
         AutoCompleteSearchComponent.AC_GROUPING_FIELD_DEFINITION_PARAM_NAME, "false:3 true:1 false:2",
@@ -216,7 +228,8 @@ public class AutoCompleteSearchComponentTest extends SolrTestCaseJ4 {
         ,"//result[@name='response']/doc[3]/str[@name='phrase'][.='bob dylan']"
     );
     
-    assertQ(req(CommonParams.QT, "dismax_ac_groupingHandlers", 
+    assertQ(req(CommonParams.QT, "dismax_ac_groupingHandlers",
+        CommonParams.DF, "prefixTok",
         CommonParams.Q, "bo",
         AutoCompleteSearchComponent.AC_GROUPING_FIELD_PARAM_NAME, "is_sponsored",
         AutoCompleteSearchComponent.AC_GROUPING_FIELD_DEFINITION_PARAM_NAME, "false:3 true:1 false:2",
@@ -237,7 +250,8 @@ public class AutoCompleteSearchComponentTest extends SolrTestCaseJ4 {
   
   @Test
   public void testAcGroupingWithSort() {
-    assertQ(req(CommonParams.QT, "dismax_ac", 
+    assertQ(req(CommonParams.QT, "dismax_ac",
+        CommonParams.DF, "prefixTok",
         CommonParams.Q, "bo",
         AutoCompleteSearchComponent.AC_GROUPING_FIELD_PARAM_NAME, "is_sponsored",
         AutoCompleteSearchComponent.AC_GROUPING_FIELD_DEFINITION_PARAM_NAME, "false:3 true:1 false:2",
@@ -255,7 +269,8 @@ public class AutoCompleteSearchComponentTest extends SolrTestCaseJ4 {
         ,"//result[@name='response']/doc[3]/str[@name='phrase'][.='bob dylan']"
     );
     
-    assertQ(req(CommonParams.QT, "dismax_ac_groupingHandlers", 
+    assertQ(req(CommonParams.QT, "dismax_ac_groupingHandlers",
+        CommonParams.DF, "prefixTok",
         CommonParams.Q, "bo",
         AutoCompleteSearchComponent.AC_GROUPING_FIELD_PARAM_NAME, "is_sponsored",
         AutoCompleteSearchComponent.AC_GROUPING_FIELD_DEFINITION_PARAM_NAME, "false:3 true:1 false:2",

@@ -26,7 +26,7 @@ public class LoadPerformaceTester {
         }
 
         FileReader input;
-        SolrClient solr = new HttpSolrClient(args[1]);
+        SolrClient solr = new HttpSolrClient.Builder(args[1]).build();
 
         try {
             input = new FileReader(args[0]);

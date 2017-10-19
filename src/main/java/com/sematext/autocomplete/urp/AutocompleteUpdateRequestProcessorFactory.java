@@ -35,7 +35,7 @@ public class AutocompleteUpdateRequestProcessorFactory extends UpdateRequestProc
         if (solrAC.startsWith("http:")) {
 
             // Used when AC core is deployed on separate Solr
-            this.solrACServer = new HttpSolrClient(solrAC);
+            this.solrACServer = new HttpSolrClient.Builder(solrAC).build();
         }
 
         this.separator = (String) args.get("separator");
@@ -66,7 +66,7 @@ public class AutocompleteUpdateRequestProcessorFactory extends UpdateRequestProc
             UpdateRequestProcessor nextURP) {
         if (this.solrACServer == null) {
             // Used with embedded Solr AC core; when AC core is deployed on same Solr and 'main index'
-            this.solrACServer = new EmbeddedSolrServer(core.getCoreDescriptor().getCoreContainer(), solrAC);
+            this.solrACServer = new EmbeddedSolrServer(core.getCoreContainer(), solrAC);
         }
 
         return new AutocompleteUpdateRequestProcessor(solrACServer, fields, copyAsIsFields, separator, nextURP);

@@ -512,8 +512,4 @@ public final class AutoCompleteSearchComponent extends AbstractReSearcherCompone
     return "AutoCompleteSearchComponent";
   }
 
-  @Override
-  public String getSource() {
-    return "$URL: http://svn.sematext.com/sematext_ext/st-AutoComplete/trunk/src/java/com/sematext/autocomplete/solr/AutoCompleteSearchComponent.java $";
-  }
 }

@@ -1,3 +1,5 @@
+In version 1.6.7.1.0
+  - 2017-10-19: upgrade to Solr 7.1.0
 In version 1.6.6.5.1
   - 2017-04-18: upgrade to Solr 6.5.1
 In version 1.6.6.3.0

@@ -69,10 +69,10 @@ public class CustomIndexLoader {
             System.exit(0);
         }
 
-        System.out.println("CustomIndexLoader startings");
+        System.out.println("CustomIndexLoader starting");
         DirectoryReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(args[0])));
         int docs = reader.maxDoc();
-        SolrClient solr = new ConcurrentUpdateSolrClient(args[1], 2000, 2);
+        SolrClient solr = new ConcurrentUpdateSolrClient.Builder(args[1]).withQueueSize(2000).withThreadCount(2).build();
         Set<SolrInputDocument> batch = new HashSet<SolrInputDocument>(1000);
 
         String[] fieldNames = args[2].split(",");
@@ -286,7 +286,7 @@ public class CustomIndexLoader {
           }
         }
         // System.out.println("Adding field " + name + " without new value " + value);
-        f.addValue(value, 1);
+        f.addValue(value);
       }
     }
 
@@ -314,7 +314,7 @@ public class CustomIndexLoader {
           }
           
           if (!valueAlreadyIn) {
-            f.addValue(v, 1);
+            f.addValue(v);
           }
         }
       }
